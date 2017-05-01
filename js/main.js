@@ -17,6 +17,34 @@ function shuffle(array) {
     return array;
 }
 
+function getBase64Image(img) {
+    // Create an empty canvas element
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Copy the image contents to the canvas
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    // Get the data-URL formatted image
+    // Firefox supports PNG and JPEG. You could check img.src to guess the
+    // original format, but be aware the using "image/jpg" will re-encode the image.
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+}
 
 ion.sound({
     sounds: [
@@ -110,6 +138,18 @@ var getArrayOfWords = function () {
 
 $(document).ready(function () {
 //    alert(message);
+
+    // $('#main-image').on("load", function () {
+    //     var image = $(this)[0];
+    //     data = getBase64Image(image);
+    //     console.log(data)
+    // });
+    // class="img-circle img-responsive center-block vertical-center hint" id="right-image"
+    var uuid = guid();
+    //  http://getimagedata.azalio.net/image/12349397-d4af-49fb-b6d2-6df7a6ccd8ee/200/200/
+    var url = "http://getimagedata.azalio.net/image/" + uuid + "/140/140/";
+    var $img = $("<img />", {"src": url, "class": "img-circle img-responsive center-block vertical-center sound"});
+    $('#main-image').html($img);
 
     var arrAns = Array();
     var message = "";
